@@ -236,6 +236,107 @@
         .btn-outline:hover {
             border-color: var(--text-secondary);
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.visible .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+        }
+        .close-button:hover {
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: var(--font-sans);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(62, 207, 142, 0.3);
+        }
+
+        #suggestion-form .btn {
+            width: 100%;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -252,6 +353,7 @@
         <div class="nav-group">
             <div class="nav-header">Connect</div>
             <a href="mailto:chrosui@gmail.com" class="nav-item">Email</a>
+            <a href="#" id="open-suggestion-btn" class="nav-item">留下建議</a>
             <a href="#" class="nav-item">ResearchGate</a>
         </div>
     </div>
@@ -320,5 +422,91 @@
             </div>
         </div>
     </div>
+
+    <!-- Suggestion Modal -->
+    <div id="suggestion-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>留下建議</h2>
+                <button id="close-modal-btn" class="close-button">&times;</button>
+            </div>
+            <form id="suggestion-form">
+                <div class="form-group">
+                    <label for="name">姓名 (Name)</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">電子郵件 (Email)</label>
+                    <input type="email" id="email" name="email" placeholder="選填 (Optional)">
+                </div>
+                <div class="form-group">
+                    <label for="comments">建議 (Suggestion)</label>
+                    <textarea id="comments" name="comments" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn">送出建議</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('suggestion-modal');
+            const openBtn = document.getElementById('open-suggestion-btn');
+            const closeBtn = document.getElementById('close-modal-btn');
+            const form = document.getElementById('suggestion-form');
+
+            const GAS_URL = 'https://script.google.com/macros/s/AKfycbx4Wf99E8EEmrlkKecr_Ys7EBVLvf4w_vqTemx-gJUijKHAyrmQINfLLhoK_fvsJLIj7Q/exec';
+
+            function showModal() {
+                modal.classList.add('visible');
+            }
+
+            function hideModal() {
+                modal.classList.remove('visible');
+            }
+
+            openBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showModal();
+            });
+
+            closeBtn.addEventListener('click', hideModal);
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    hideModal();
+                }
+            });
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.textContent = '傳送中...';
+
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                })
+                .then(res => res.json())
+                .then(data => {
+                    alert('感謝您的建議！ (Thank you for your suggestion!)');
+                    form.reset();
+                    hideModal();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('傳送失敗，請稍後再試。');
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '送出建議';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
