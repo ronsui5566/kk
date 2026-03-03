@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi-Jung Sui | Academic Portfolio</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --sidebar-bg: #181818;
+            --card-bg: #1c1c1c;
+            --border-color: #333333;
+            --text-primary: #ededed;
+            --text-secondary: #888888;
+            --accent-color: #3ECF8E;
+            --accent-hover: #34b27b;
+            --font-mono: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 40px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .nav-group {
+            margin-bottom: 24px;
+        }
+
+        .nav-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 8px 0;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            height: 60px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background-color: var(--bg-color);
+        }
+
+        .breadcrumb {
+            color: var(--text-primary);
+        }
+
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .code-block {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .key { color: #79c0ff; }
+        .string { color: #a5d6ff; }
+        .value { color: var(--accent-color); }
+        .comment { color: #6a737d; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .paper-title {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .paper-title:hover {
+            color: var(--accent-color);
+        }
+
+        .paper-meta {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            display: inline-block;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .tag.accent {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background-color: rgba(62, 207, 142, 0.05);
+        }
+
+        .abstract {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--accent-color);
+            color: #121212;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            margin-left: 8px;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo"><span>⚡</span> sui.academic</div>
+        
+        <div class="nav-group">
+            <div class="nav-header">Menu</div>
+            <a href="#" class="nav-item active">Overview</a>
+            <a href="#" class="nav-item">Publications</a>
+            <a href="#" class="nav-item">Projects</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-header">Connect</div>
+            <a href="mailto:chrosui@gmail.com" class="nav-item">Email</a>
+            <a href="#" class="nav-item">ResearchGate</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="top-bar">
+            <span>researcher / <span class="breadcrumb">chi-jung-sui</span></span>
+        </div>
+
+        <div class="content-scroll">
+            <div class="container">
+                <header>
+                    <h1>Chi-Jung Sui</h1>
+                    <div class="subtitle">Researcher in Science Education & Technology</div>
+                    
+                    <div class="card">
+                        <div class="code-block">
+                            <div class="comment">// Researcher Profile</div>
+                            <div><span class="key">const</span> <span class="value">profile</span> = {</div>
+                            <div style="padding-left: 20px">name: <span class="string">"Chi-Jung Sui"</span>,</div>
+                            <div style="padding-left: 20px">affiliations: [</div>
+                            <div style="padding-left: 40px"><span class="string">"Graduate Institute of Science Education, NTNU"</span>,</div>
+                            <div style="padding-left: 40px"><span class="string">"New Taipei Municipal ZhongShan Junior High School"</span></div>
+                            <div style="padding-left: 20px">],</div>
+                            <div style="padding-left: 20px">interests: [<span class="string">"Inquiry-based Learning"</span>, <span class="string">"Knowledge Integration"</span>, <span class="string">"Go-Lab"</span>],</div>
+                            <div style="padding-left: 20px">email: <span class="string">"chrosui@gmail.com"</span></div>
+                            <div>};</div>
+                        </div>
+                    </div>
+                </header>
+
+                <section>
+                    <h3 style="margin-bottom: 20px; font-weight: 500; color: var(--text-primary);">Selected Publications</h3>
+                    
+                    <div class="card">
+                        <div class="section-header">
+                            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-color);">LATEST RESEARCH</span>
+                            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary);">2023</span>
+                        </div>
+
+                        <a href="https://doi.org/10.1007/s10956-022-10008-x" target="_blank" class="paper-title">
+                            The Go‑Lab Platform, an Inquiry‑learning Space: Investigation into Students’ Technology Acceptance, Knowledge Integration, and Learning Outcomes
+                        </a>
+                        
+                        <div class="paper-meta">
+                            Journal of Science Education and Technology (2023) 32:61–77
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <span class="tag accent">Go-Lab</span>
+                            <span class="tag">Mendelian Genetics</span>
+                            <span class="tag">Technology Acceptance</span>
+                            <span class="tag">Knowledge Integration</span>
+                        </div>
+
+                        <p class="abstract">
+                            Utilizing an inquiry-learning space (ILS) via the Go-Lab platform, we investigated students’ technology acceptance, knowledge integration [KI] process, and learning outcomes. This study aimed to understand how students engage in knowledge integration tasks using an inquiry-learning space to learn Mendelian genetics and realize the relationship between student KI and domain knowledge.
+                        </p>
+
+                        <div style="display: flex; align-items: center;">
+                            <a href="https://doi.org/10.1007/s10956-022-10008-x" class="btn">Read Paper</a>
+                            <button class="btn btn-outline">Cite</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
