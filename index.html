@@ -455,7 +455,7 @@
             const closeBtn = document.getElementById('close-modal-btn');
             const form = document.getElementById('suggestion-form');
 
-            const GAS_URL = 'https://script.google.com/macros/s/AKfycbx4Wf99E8EEmrlkKecr_Ys7EBVLvf4w_vqTemx-gJUijKHAyrmQINfLLhoK_fvsJLIj7Q/exec';
+            const API_URL = '/api/submit';
 
             function showModal() {
                 modal.classList.add('visible');
@@ -487,8 +487,9 @@
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
 
-                fetch(GAS_URL, {
+                fetch(API_URL, {
                     method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data),
                 })
                 .then(res => res.json())
